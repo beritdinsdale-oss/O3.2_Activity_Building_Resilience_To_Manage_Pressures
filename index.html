@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Design a Resilient Garden</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+  <section class="screen active" id="intro">
+    <div class="paper intro intro-v19">
+      <div class="intro-photo-wrap">
+        <img class="intro-photo" src="garden-title.jpg" alt="A productive home vegetable garden with raised beds, tomatoes, beans, herbs, and leafy crops.">
+        <div class="photo-credit">Photo: Joanne Dale / Adobe Stock</div>
+      </div>
+      <div class="intro-copy">
+        <span class="tag">MODULE 3 · SEASON-LONG DESIGN CHALLENGE</span>
+        <h1>Design a Resilient Garden</h1>
+        <p class="lead">Build one garden in May, then keep managing the same system as weather, plants, and water needs change through the season.</p>
+        <div class="season-path" aria-label="Activity sequence">
+          <div><b>MAY</b><span>Plant + set up water</span></div>
+          <div><b>JUNE</b><span>Adjust water + mulch</span></div>
+          <div><b>JULY</b><span>Test water + mulch in heat</span></div>
+          <div><b>AUGUST</b><span>Reassess the mature garden</span></div>
+        </div>
+        <p class="intro-note">As the season changes, experiment with <strong>irrigation amount and mulch together</strong>. Can you maintain adequate root-zone moisture without simply adding more water?</p>
+        <button class="primary" data-go="may">Start planning →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="may"></section>
+  <section class="screen" id="may-outcome"></section>
+  <section class="screen" id="june"></section>
+  <section class="screen" id="june-outcome"></section>
+  <section class="screen" id="july"></section>
+  <section class="screen" id="july-outcome"></section>
+  <section class="screen" id="august"></section>
+  <section class="screen" id="august-outcome"></section>
+
+  <section class="screen" id="conclusion">
+    <div class="paper conclusion v19-conclusion">
+      <span class="tag">SEASON COMPLETE</span>
+      <h2>Your garden changed—and so did the management decisions.</h2>
+      <p class="lead">Resilience was not one perfect choice made in May. It came from observing conditions, matching management to plant needs, and adjusting as the season changed.</p>
+      <div id="seasonSummary" class="season-summary"></div>
+      <div class="conclusion-grid">
+        <section>
+          <h3>🍂 Mulch changes the water balance</h3>
+          <p>Mulch does not supply water. It slows water loss, which can allow a lower irrigation amount to maintain similar root-zone moisture than bare soil under the same conditions.</p>
+        </section>
+        <section>
+          <h3>💧 Irrigation amount still matters</h3>
+          <p>Plants differ in water demand. When bare soil dries quickly, a higher irrigation amount may compensate; with mulch, the same crop may maintain moisture with less applied water. Root-zone conditions determine whether an adjustment is useful.</p>
+        </section>
+        <section>
+          <h3>☀️ Short-term protection is situational</h3>
+          <p>Temporary shade or supplemental water can help during extreme heat, but those tools are most useful when conditions and plant needs support them.</p>
+        </section>
+      </div>
+      <div class="final-prompt">
+        <h3>Carry this into your own garden</h3>
+        <p>When conditions change, ask: <strong>What am I observing? What is this plant likely to need now? Has my earlier management changed the soil-water environment?</strong></p>
+      </div>
+      <div class="buttons conclusion-actions"><button id="reviewAugust" class="secondary">← Previous results</button><button id="startNew" class="secondary">↺ Start a new garden</button></div>
+    </div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
