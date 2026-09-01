@@ -629,3 +629,25 @@ body{font-size:18px}.largerintro{font-size:1.12rem;line-height:1.5}.conditionsba
 .moisture-summary-item.dry{background:#fff3e1;border-color:#d6b078}
 .moisture-summary-item.adequate,.moisture-summary-item.moist{background:#eef4eb;border-color:#b8c9b1}
 .moisture-summary-item.very-moist{background:#edf4f6;border-color:#a9c5cf}
+
+/* V20.3: readable outcome map + May irrigation logic + Field Notebook */
+.clean-outcome-grid .cell{padding:10px 7px 31px!important;overflow:hidden!important}
+.clean-outcome-grid .plantstate{top:6px!important;right:6px!important;transform:none!important;inset:auto 6px auto auto!important}
+.clean-outcome-grid .plantstate:before,.clean-outcome-grid .plantstate:after{display:none!important}
+.clean-outcome-grid .outcome-management-icons{position:absolute;left:5px;right:5px;bottom:5px;min-height:21px;display:flex;justify-content:center;align-items:center;gap:3px;flex-wrap:nowrap;overflow:hidden}
+.clean-outcome-grid .outcome-management-icons .mgmt-tag{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:20px;padding:1px 4px;border-radius:999px;background:#fff;border:1px solid #d5ccbc;font-size:.68rem;font-weight:800;line-height:1;white-space:nowrap}
+.clean-outcome-grid .cell-icons,.clean-outcome-grid .soil-status{display:none!important}
+
+.journal-entry{margin:30px 0 8px;padding:25px;background:#fffaf0;border:2px solid #d6c49f;border-radius:20px;box-shadow:0 6px 16px #473d2d10;position:relative}
+.journal-stamp{display:inline-block;background:#476b4d;color:#fff;border-radius:999px;padding:6px 11px;font-size:.75rem;font-weight:900;letter-spacing:.11em;margin-bottom:12px}
+.journal-heading{display:grid;grid-template-columns:58px 1fr;gap:14px;align-items:start;border-bottom:2px dashed #d8c9aa;padding-bottom:16px;margin-bottom:18px}
+.journal-doodle{font-size:2rem;line-height:1.1;transform:rotate(-5deg)}
+.journal-heading h3{font-size:1.55rem;margin:0 0 6px}.journal-heading p{margin:0;line-height:1.5}
+.journal-question{display:grid;grid-template-columns:40px minmax(0,1fr);gap:7px 12px;margin:17px 0;padding:16px;background:#fff;border:1px solid #e1d7c4;border-radius:15px}
+.journal-question>label,.journal-question>legend>span:last-child{font-size:1rem;line-height:1.4}.journal-question small{display:block;font-size:.86rem;font-weight:400;color:#667067;margin-top:3px}
+.journal-number{grid-row:1/span 2;width:31px;height:31px;border-radius:50%;background:#7b5b8f;color:#fff;display:grid;place-items:center;font-weight:900}
+.journal-question textarea{grid-column:2;width:100%;box-sizing:border-box;border:2px solid #cfc5b3;border-radius:10px;padding:10px 12px;font:inherit;line-height:1.45;resize:vertical;background:#fffefb}
+fieldset.journal-question{border:1px solid #e1d7c4}fieldset.journal-question legend{display:grid;grid-template-columns:40px 1fr;gap:12px;width:100%;padding:0;margin:0 0 10px}
+fieldset.journal-question .journal-number{grid-row:auto}.journal-choice-grid{grid-column:2;display:grid;grid-template-columns:1fr 1fr;gap:8px}.journal-choice-grid label{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 10px;border:1px solid #d7cdbc;border-radius:10px;background:#faf7ef;font-weight:700}.journal-choice-grid input{width:18px;height:18px}.journal-followup{grid-column:2;margin-top:8px;font-weight:700}.journal-followup textarea{grid-column:auto;margin-top:7px}
+.journal-save-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}.journal-save-row span{font-size:.9rem;color:#5d685f}
+@media(max-width:650px){.journal-heading{grid-template-columns:1fr}.journal-question{grid-template-columns:34px minmax(0,1fr);padding:12px}.journal-choice-grid{grid-template-columns:1fr}.journal-save-row button{width:100%}}

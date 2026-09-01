@@ -63,6 +63,14 @@
         <h3>Carry this into your own garden</h3>
         <p>When conditions change, ask: <strong>What am I observing? What is this plant likely to need now? Has my earlier management changed the soil-water environment?</strong></p>
       </div>
+      <section class="journal-entry" aria-labelledby="journalTitle">
+        <div class="journal-stamp">MY FIELD NOTEBOOK</div>
+        <div class="journal-heading"><div class="journal-doodle" aria-hidden="true">💧🍂</div><div><h3 id="journalTitle">Turn your mulch choice into a water plan</h3><p>You made mulch decisions in the Mulch Lab and experimented with irrigation here. Bring those ideas together for your own garden—just enough to guide what you try next.</p></div></div>
+        <div class="journal-question"><span class="journal-number">1</span><label for="journalMulch"><b>Where will mulch be part of your plan?</b><small>Think back to the Mulch Lab. Name a bed, crop, or area and the mulch approach you would use.</small></label><textarea id="journalMulch" rows="3" placeholder="For example: Around my summer vegetables..."></textarea></div>
+        <fieldset class="journal-question"><legend><span class="journal-number">2</span><span><b>How do you expect to irrigate that area?</b><small>This is a starting plan, not a permanent schedule.</small></span></legend><div class="journal-choice-grid"><label><input type="radio" name="journalIrrigation" value="Drip irrigation">💧 Drip irrigation</label><label><input type="radio" name="journalIrrigation" value="Hand watering">✋ Hand watering</label><label><input type="radio" name="journalIrrigation" value="A combination">💧 + ✋ A combination</label><label><input type="radio" name="journalIrrigation" value="Not sure yet">🌱 Not sure yet</label></div><label class="journal-followup" for="journalIrrigationNotes">What will help you decide how much or how often to water?<textarea id="journalIrrigationNotes" rows="2" placeholder="Soil moisture, plant stage, weather, how quickly the bed dries..."></textarea></label></fieldset>
+        <div class="journal-question"><span class="journal-number">3</span><label for="journalWatch"><b>What will tell you the plan needs to change?</b><small>Name one thing you will watch for as weather and plant needs change.</small></label><textarea id="journalWatch" rows="3" placeholder="For example: If the soil stays moist longer after I mulch..."></textarea></div>
+        <div class="journal-save-row"><button id="saveJournal" class="primary" type="button">Save to my Field Notebook</button><span id="journalSaved" aria-live="polite">Your answers save as you work.</span></div>
+      </section>
       <div class="buttons conclusion-actions"><button id="reviewAugust" class="secondary">← Previous results</button><button id="startNew" class="secondary">↺ Start a new garden</button></div>
     </div>
   </section>

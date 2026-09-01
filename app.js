@@ -84,12 +84,13 @@ function buildCards(month){
 }
 
 function managementIcons(c,m){const tags=[];if(c.water==='drip-low')tags.push('<span class="mgmt-tag">💧 L</span>');if(c.water==='drip-medium')tags.push('<span class="mgmt-tag">💧 M</span>');if(c.water==='drip-high')tags.push('<span class="mgmt-tag">💧 H</span>');if(c.water==='hand')tags.push('<span class="mgmt-tag">✋</span>');if(isMulched(c,m))tags.push('<span class="mgmt-tag">🍂</span>');if(c.shade)tags.push('<span class="mgmt-tag">▧</span>');return tags.join('');}
+function managementText(c,m){const a=[];if(c.water)a.push(irrigationLabel(c));if(isMulched(c,m))a.push('organic mulch');if(c.shade)a.push('temporary shade');return a.length?a.join(', '):'none';}
 function cellContent(c,month){if(!c.plant)return '<span class="emptyplot">+</span>';const cp=crops[c.plant],icons=managementIcons(c,month);return `<span class="plantemoji">${cp.e}</span><span class="plantname">${cp.n}</span>${c.planned?'<small class="planned-label">Planned for later</small>':''}<small class="cell-icons">${icons}</small>`}
 function outcomeCellContent(c,r){
   if(!c.plant)return '';
   const cp=crops[c.plant];
   const marker=!r||r.status==='planned'?'':`<span class="plantstate ${r.status}" aria-label="${r.status==='good'?'Doing well':r.status==='watch'?'Needs attention':'Significant stress'}">${r.status==='good'?'✓':r.status==='watch'?'!':'×'}</span>`;
-  return `<span class="plantemoji">${cp.e}</span><span class="plantname">${cp.n}</span>${c.planned?'<small class="planned-label">Planned for later</small>':''}${marker}`;
+  return `<span class="plantemoji">${cp.e}</span><span class="plantname">${cp.n}</span>${c.planned?'<small class="planned-label">Planned for later</small>':''}${marker}<small class="outcome-management-icons" aria-label="Selected management: ${managementText(c, S.month)}">${managementIcons(c,S.month)}</small>`;
 }
 function renderGrid(el,month,clickable=true,vals=null,cells=S.cells){
   el.innerHTML='';cells.forEach((c,i)=>{const node=document.createElement(clickable?'button':'div');if(clickable)node.type='button';node.className='cell';if(c.planned)node.classList.add('planned-cell');node.innerHTML=vals?outcomeCellContent(c,vals[i]):cellContent(c,month);if(clickable)node.addEventListener('click',()=>applyToCell(month,i));el.appendChild(node)});
@@ -197,9 +198,6 @@ function specificCauses(c,i,month){
   }
 
   // Water feedback is driven by estimated soil moisture, not by mulch alone.
-  if(month==='may'&&!c.water&&['lettuce','tomato','bean','cucumber'].includes(c.plant)){
-    neg.push({sev:1,msg:`This ${crops[c.plant].n.toLowerCase()} does not yet have an irrigation plan for the drier part of the season. The soil is moist now, but decide how much drip irrigation it will receive or whether it will be hand watered as needed.`});
-  }
   if(seasonIndex(month)>=1&&moist.key==='dry'&&['lettuce','tomato','bean','cucumber'].includes(c.plant)){
     const amount=irrigationLabel(c);
     const mulchText=mulched?'Mulch is slowing evaporation, but the irrigation amount still is not enough to meet crop demand.':`Without mulch, more of the soil water is being lost between irrigations.`;
@@ -255,7 +253,7 @@ function runMonth(month){
 function renderOutcome(month,vals,cells=S.cells,reviewReturn=null){
   const host=document.getElementById(`${month}-outcome`),good=vals.filter(r=>r&&r.status==='good').length,watch=vals.filter(r=>r&&r.status==='watch').length,bad=vals.filter(r=>r&&r.status==='bad').length,planned=vals.filter(r=>r&&r.status==='planned').length;
   host.innerHTML=`<div class="paper wide outcome-page"><header class="outcome-page-header"><div class="month-stage"><span class="month-word">${month.toUpperCase()}</span><span class="month-step">OUTCOMES</span></div><div><h2>Here’s what happened in your garden</h2><p>Review the outcomes and the specific causes below. You can go back with all of your choices preserved, or continue to the next month.</p></div></header>
-    <section class="feedback-first"><div class="outcome-map"><div id="outcome-grid-${month}" class="grid result-outcome-grid clean-outcome-grid"></div><p class="outcome-map-note">The map shows crop outcomes only. Your management choices are explained alongside the results.</p></div><div class="outcome-feedback"><div class="outcome-summary"><span class="statebadge good">✓</span> ${good} doing well &nbsp; <span class="statebadge watch">!</span> ${watch} needs attention &nbsp; <span class="statebadge bad">×</span> ${bad} struggling ${planned?`&nbsp; <span class="planned-chip">${planned} planned for later</span>`:''}</div>${rootZoneSummary(vals,cells)}<h3>What happened</h3>${cropLevelFeedback(month,vals,cells)}${waterMulchFeedback(month,vals,cells)}</div></section>
+    <section class="feedback-first"><div class="outcome-map"><div id="outcome-grid-${month}" class="grid result-outcome-grid clean-outcome-grid"></div><p class="outcome-map-note">The map shows what happened and the management choices you made. Root-zone moisture and explanations are kept outside the plots for readability.</p></div><div class="outcome-feedback"><div class="outcome-summary"><span class="statebadge good">✓</span> ${good} doing well &nbsp; <span class="statebadge watch">!</span> ${watch} needs attention &nbsp; <span class="statebadge bad">×</span> ${bad} struggling ${planned?`&nbsp; <span class="planned-chip">${planned} planned for later</span>`:''}</div>${rootZoneSummary(vals,cells)}<h3>What happened</h3>${cropLevelFeedback(month,vals,cells)}${waterMulchFeedback(month,vals,cells)}</div></section>
     <div class="outcome-actions simple-outcome-actions">${reviewReturn?`<button type="button" class="primary" data-return-current="${reviewReturn}">Return to ${cap(reviewReturn)} →</button>`:`<button type="button" class="secondary" data-full-design="${month}">← Go back and make changes</button><button type="button" class="primary" data-accept="${month}">${monthMeta[month].nextLabel}</button>`}</div>
   </div>`;
   renderGrid(document.getElementById(`outcome-grid-${month}`),month,false,vals,cells);
@@ -281,7 +279,27 @@ function advance(month){
   resetTemporary();S.month=next;S.crop=null;S.plantTiming=null;S.tool=null;drawAll();show(next);
 }
 function clearGarden(){if(confirm('Clear the entire garden and start over?')){S.cells=Array.from({length:12},freshCell);S.history={};S.crop=null;S.plantTiming=null;S.tool=null;drawAll()}}
-function buildConclusion(){const planted=S.cells.filter(c=>c.plant),byMulch={};planted.forEach(c=>{const n=crops[c.plant].n;(byMulch[c.mulchMonth||'not mulched']??=[]).push(n)});const parts=Object.entries(byMulch).map(([m,names])=>`<p><b>${m==='not mulched'?'Not mulched':`Mulched in ${cap(m)}`}:</b> ${[...new Set(names)].join(', ')}</p>`).join('');document.getElementById('seasonSummary').innerHTML=`<h3>Your season at a glance</h3><p><b>${planted.length}</b> planted areas finished the season.</p>${parts||'<p>No crops were planted.</p>'}`}
+function buildConclusion(){const planted=S.cells.filter(c=>c.plant),byMulch={};planted.forEach(c=>{const n=crops[c.plant].n;(byMulch[c.mulchMonth||'not mulched']??=[]).push(n)});const parts=Object.entries(byMulch).map(([m,names])=>`<p><b>${m==='not mulched'?'Not mulched':`Mulched in ${cap(m)}`}:</b> ${[...new Set(names)].join(', ')}</p>`).join('');document.getElementById('seasonSummary').innerHTML=`<h3>Your season at a glance</h3><p><b>${planted.length}</b> planted areas finished the season.</p>${parts||'<p>No crops were planted.</p>'}`;loadJournalEntry()}
+const JOURNAL_KEY='gardenJournal.module3.waterMulchPlan';
+function journalData(){return {
+  mulch:document.getElementById('journalMulch')?.value.trim()||'',
+  irrigation:document.querySelector('input[name="journalIrrigation"]:checked')?.value||'',
+  irrigationNotes:document.getElementById('journalIrrigationNotes')?.value.trim()||'',
+  watch:document.getElementById('journalWatch')?.value.trim()||'',
+  savedAt:new Date().toISOString()
+}}
+function saveJournalEntry(){
+  const d=journalData();
+  try{localStorage.setItem(JOURNAL_KEY,JSON.stringify(d));}catch(e){}
+  try{window.parent.postMessage({type:'garden-journal-entry',section_id:'water',item_id:'module3-water-mulch-plan',data:d},'*');}catch(e){}
+  const msg=document.getElementById('journalSaved');if(msg)msg.textContent='Saved ✓ Your water + mulch plan is recorded in this browser.';
+}
+function loadJournalEntry(){
+  let d={};try{d=JSON.parse(localStorage.getItem(JOURNAL_KEY)||'{}')}catch(e){}
+  const mulch=document.getElementById('journalMulch'),notes=document.getElementById('journalIrrigationNotes'),watch=document.getElementById('journalWatch');
+  if(mulch)mulch.value=d.mulch||'';if(notes)notes.value=d.irrigationNotes||'';if(watch)watch.value=d.watch||'';
+  if(d.irrigation){const r=document.querySelector(`input[name="journalIrrigation"][value="${d.irrigation}"]`);if(r)r.checked=true}
+}
 function resetAll(){S.month='may';S.tool=null;S.crop=null;S.plantTiming=null;S.cells=Array.from({length:12},freshCell);S.history={};drawAll();show('intro')}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo(0,0);if(months.includes(id)){S.month=id;draw(id)}}
 
@@ -295,4 +313,5 @@ document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=
 document.querySelectorAll('[data-review-previous]').forEach(b=>b.addEventListener('click',()=>reviewPrevious(b.dataset.reviewPrevious,b.dataset.return)));
 document.getElementById('startNew').addEventListener('click',resetAll);
 const reviewAugust=document.getElementById('reviewAugust');if(reviewAugust)reviewAugust.addEventListener('click',()=>reviewPrevious('august','conclusion'));
+const journalSave=document.getElementById('saveJournal');if(journalSave)journalSave.addEventListener('click',saveJournalEntry);document.querySelectorAll('.journal-entry input,.journal-entry textarea').forEach(el=>el.addEventListener('change',saveJournalEntry));
 drawAll();show('intro');
